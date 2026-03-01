@@ -39,7 +39,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isLoading: true, error: null);
 
     try {
-      final user = await _authService.signUpWithEmail(email, password);
+      final user = await _authService.signInwithEmail(email, password);
       if (user != null) {
         state = state.copyWith(
           isLoading: false,
@@ -53,6 +53,23 @@ class AuthNotifier extends StateNotifier<AuthState> {
       //     error: 'Login failed. Please try again.',
       //   );
       // }
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    state = state.copyWith(isLoading: true, error: null);
+
+    try {
+      final userCredential = await _authService.signInWithGoogle();
+      if (userCredential != null) {
+        state = state.copyWith(
+          isLoading: false,
+          isAuthenticated: true,
+          userEmail: userCredential.user?.email,
+        );
+      }
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:safarsync_app/config/route_names.dart';
 import 'package:safarsync_app/providers/auth_provider.dart';
 import 'package:safarsync_app/screens/auth/login_screen.dart';
+import 'package:safarsync_app/screens/home/home_screen.dart';
 import 'package:safarsync_app/screens/home/home_shell.dart';
 
 final goRouteProvider = Provider<GoRouter>((ref) {
@@ -36,8 +37,13 @@ final goRouteProvider = Provider<GoRouter>((ref) {
       ),
 
       GoRoute(
-        path: RouteNames.home,
+        path: RouteNames.homeShell,
         builder: (context, state) => const HomeShell(),
+      ),
+
+      GoRoute(
+        path: RouteNames.home,
+        builder: (context, state) => const HomeScreen(),
       ),
     ],
   );
