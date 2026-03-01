@@ -23,6 +23,7 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,
       primary: AppColors.primary,
+      // ignore: deprecated_member_use
       background: AppColors.background,
     ),
 

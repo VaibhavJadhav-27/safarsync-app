@@ -5,7 +5,6 @@ import 'package:safarsync_app/config/colors.dart';
 import 'package:safarsync_app/config/route_names.dart';
 import 'package:safarsync_app/config/text_styles.dart';
 import 'package:safarsync_app/providers/auth_provider.dart';
-import 'package:safarsync_app/services/auth_service.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -33,7 +32,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    final authService = AuthService();
 
     // Check if user is already authenticated
     ref.listen(authProvider, (previous, next) {

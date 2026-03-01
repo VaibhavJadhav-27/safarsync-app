@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:safarsync_app/providers/home_tab_provider.dart';
 
 class HomeTabs extends ConsumerWidget {
+  const HomeTabs({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tab = ref.watch(homeTabProvider);
