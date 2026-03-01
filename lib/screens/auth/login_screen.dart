@@ -20,17 +20,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+
     // Check if user is already authenticated
     ref.listen(authProvider, (previous, next) {
       if (next.isAuthenticated) {
         context.go(RouteNames.home);
       }
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final authState = ref.watch(authProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,

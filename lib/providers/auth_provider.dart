@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/legacy.dart';
+import 'package:safarsync_app/services/auth_service.dart';
 
 class AuthState {
   final bool isLoading;
@@ -31,20 +32,29 @@ class AuthState {
 class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier() : super(const AuthState());
 
+  final AuthService _authService = AuthService();
+
   /// Fake login (Firebase comes later)
   Future<void> login(String email, String password) async {
     state = state.copyWith(isLoading: true, error: null);
 
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (email.isNotEmpty && password.isNotEmpty) {
-      state = state.copyWith(
-        isLoading: false,
-        isAuthenticated: true,
-        userEmail: email,
-      );
-    } else {
-      state = state.copyWith(isLoading: false, error: "Invalid credentials");
+    try {
+      final user = await _authService.signUpWithEmail(email, password);
+      if (user != null) {
+        state = state.copyWith(
+          isLoading: false,
+          isAuthenticated: true,
+          userEmail: user.email,
+        );
+      }
+      // else {
+      //   state = state.copyWith(
+      //     isLoading: false,
+      //     error: 'Login failed. Please try again.',
+      //   );
+      // }
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 

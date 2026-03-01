@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"safarsync-app","appId":"1:571843992640:android:7bbdc0c1f5e97276e253a5","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"safarsync-app","configurations":{"android":"1:571843992640:android:7bbdc0c1f5e97276e253a5","ios":"1:571843992640:ios:fa59c896c5023fdbe253a5"}}}}}}
