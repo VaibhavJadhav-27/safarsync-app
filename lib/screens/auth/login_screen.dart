@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safarsync_app/config/colors.dart';
 import 'package:safarsync_app/config/route_names.dart';
 import 'package:safarsync_app/config/text_styles.dart';
+import 'package:safarsync_app/providers/auth_provider.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    // Check if user is already authenticated
+    ref.listen(authProvider, (previous, next) {
+      if (next.isAuthenticated) {
+        context.go(RouteNames.home);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       // backgroundColor: AppColors.background,
@@ -166,10 +181,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           //     borderRadius: BorderRadius.circular(12),
                           //   ),
                           // ),
-                          onPressed: () {
-                            context.go(RouteNames.home);
-                          },
-                          child: const Text("Sign In"),
+                          onPressed: authState.isLoading
+                              ? null
+                              : () async {
+                                  // context.go(RouteNames.home)
+                                  await ref
+                                      .read(authProvider.notifier)
+                                      .login(
+                                        _emailController.text,
+                                        _passwordController.text,
+                                      );
+                                },
+                          child: authState.isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white,
+                                    ),
+                                  ),
+                                )
+                              : const Text("Sign In"),
                         ),
 
                         // ),
